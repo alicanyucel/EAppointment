@@ -15,6 +15,7 @@ namespace EAppointment.Domain.Entities
         public string City {  get; set; } = string.Empty;
         public string Town { get; set; } = string.Empty;
         public string FullAdress { get; set; } = string.Empty;
+        public string FullName => string.Join(" ", FirstName, LastName);
         public Patient()
         {
             Id = Guid.NewGuid();
