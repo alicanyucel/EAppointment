@@ -11,6 +11,10 @@ namespace EAppointment.Application
     {
         public static IServiceCollection AddApplication(this IServiceCollection service)
         {
+            service.AddMediatR(configuration =>
+            {
+                configuration.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly);
+            });
             return service;
         }
     }
