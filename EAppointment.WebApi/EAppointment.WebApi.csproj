@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -9,6 +9,12 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.4" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EAppointment.Application\EAppointment.Application.csproj" />
+    <ProjectReference Include="..\EAppointment.Domain\EAppointment.Domain.csproj" />
+    <ProjectReference Include="..\EAppointment.Infrastructure\EAppointment.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

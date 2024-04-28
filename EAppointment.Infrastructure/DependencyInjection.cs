@@ -1,11 +1,14 @@
-﻿using EAppointment.Domain.Entities;
+﻿using EAppointment.Application.Services;
+using EAppointment.Domain.Entities;
 using EAppointment.Domain.Repositories;
 using EAppointment.Infrastructure.Context;
 using EAppointment.Infrastructure.Repositories;
+using EAppointment.Infrastructure.Services;
 using GenericRepository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Scrutor;
 
 namespace EAppointment.Infrastructure
 {
@@ -26,10 +29,12 @@ namespace EAppointment.Infrastructure
                 action.Password.RequireNonAlphanumeric = false;
                 action.Password.RequireDigit = false;
             }).AddEntityFrameworkStores<ApplicationDbContext>();
-            services.AddScoped<IAppointmentsRepository,AppointmentRepository>();
-            services.AddScoped<IDoctorRepository, DoctorRepository>();
-            services.AddScoped<IPatientRepository,PatientRepository>();
-            services.AddScoped<IUnitOfWork>(srv=>srv.GetRequiredService<ApplicationDbContext>());
+            services.AddScoped<IUnitOfWork>(srv => srv.GetRequiredService<ApplicationDbContext>());
+            services.Scan(action =>
+            { // isimler aynın oldugu sürece optomatik olarak dinjection yapar
+                action.FromAssemblies(typeof(DependencyInjection).Assembly).AddClasses(publicOnly: false).UsingRegistrationStrategy(registrationStrategy: RegistrationStrategy.Skip).AsImplementedInterfaces().WithScopedLifetime();
+            });
+            
             return services;
         }
     }
