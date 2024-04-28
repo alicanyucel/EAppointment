@@ -1,6 +1,9 @@
 using DefaultCorsPolicyNugetPackage;
 using EAppointment.Application;
+using EAppointment.Domain.Entities;
 using EAppointment.Infrastructure;
+using EAppointment.WebApi;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDefaultCors(); //taner saydam hocanýn cors kütüphanesi 
@@ -25,5 +28,6 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+Helper.CreateUserAsync(app).Wait();
 
 app.Run();
