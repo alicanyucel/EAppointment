@@ -1,7 +1,9 @@
+using DefaultCorsPolicyNugetPackage;
 using EAppointment.Application;
 using EAppointment.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDefaultCors(); //taner saydam hocanýn cors kütüphanesi 
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 // Add services to the container.
@@ -17,7 +19,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseCors();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
