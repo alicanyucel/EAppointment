@@ -17,7 +17,7 @@ public class DoctorsController : ApiController
     [HttpPost]
     public async Task<IActionResult> GetAll(GetAllDoctorQuery request,CancellationToken cancellationToken)
     {
-        var response = await _mediator.Send(request,cancellationToken);
+        var response =Result<string>.Failure(new List<string>() {"example error1 ,example error 2"});
         return StatusCode(response.StatusCode, response);
 
     }

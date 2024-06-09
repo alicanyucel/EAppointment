@@ -16,7 +16,7 @@ namespace EAppointment.Application.Mapping
         {
             CreateMap<CreateDoctorCommand, Doctor>().ForMember(member => member.Department, options =>
             {
-                options.MapFrom(map => DepartmentEnum.FromValue(map.Departmrnt));
+                options.MapFrom(map => DepartmentEnum.FromValue(map.Department));
             });
         }
     }
