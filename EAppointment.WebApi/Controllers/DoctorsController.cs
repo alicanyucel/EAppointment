@@ -1,4 +1,5 @@
 ﻿using EAppointment.Application.Features.Doctors.CreateDoctor;
+using EAppointment.Application.Features.Doctors.DeleteDoctorById;
 using EAppointment.Application.Features.Doctors.GetAllDoctor;
 using EAppointment.WebApi.Abstractions;
 using MediatR;
@@ -17,7 +18,7 @@ public class DoctorsController : ApiController
     [HttpPost]
     public async Task<IActionResult> GetAll(GetAllDoctorQuery request,CancellationToken cancellationToken)
     {
-        var response =Result<string>.Failure(new List<string>() {"example error1 ,example error 2"});
+        var response = await _mediator.Send(request,cancellationToken);
         return StatusCode(response.StatusCode, response);
 
     }
@@ -27,5 +28,11 @@ public class DoctorsController : ApiController
         var response = await _mediator.Send(request, cancellationToken);
         return StatusCode(response.StatusCode, response);
 
+    }
+    [HttpPost]
+    public async Task<IActionResult> DeleteById(DeleteDoctorByIdCommand request, CancellationToken cancellationToken)
+    {
+        var response = await _mediator.Send(request, cancellationToken);
+        return StatusCode(response.StatusCode, response);
     }
 }
