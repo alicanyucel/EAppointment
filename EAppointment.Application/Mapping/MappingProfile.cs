@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using EAppointment.Application.Features.Doctors.CreateDoctor;
+using EAppointment.Application.Features.Doctors.UpdateDoctor;
 using EAppointment.Domain.Entities;
 using Microsoft.Extensions.Options;
 using System;
@@ -16,7 +17,11 @@ namespace EAppointment.Application.Mapping
         {
             CreateMap<CreateDoctorCommand, Doctor>().ForMember(member => member.Department, options =>
             {
-                options.MapFrom(map => DepartmentEnum.FromValue(map.Department));
+                options.MapFrom(map => DepartmentEnum.FromValue(map.DepartmentValue));
+            });
+            CreateMap<UpdataDoctorCommand, Doctor>().ForMember(member => member.Department, options =>
+            {
+                options.MapFrom(map => DepartmentEnum.FromValue(map.DepartmentValue));
             });
         }
     }

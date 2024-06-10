@@ -8,6 +8,6 @@ using TS.Result;
 
 namespace EAppointment.Application.Features.Doctors.CreateDoctor
 {
-    public sealed  record  CreateDoctorCommand(string FirstName,string LastName,int Department):IRequest<Result<string>>;
+    public sealed  record  CreateDoctorCommand(string FirstName,string LastName,int DepartmentValue):IRequest<Result<string>>;
 
 }
