@@ -14,5 +14,4 @@ internal sealed class GetAllPatientQueryHandler(IPatientRepository patientReposi
         return patients;
     }
 }
-
-
+                     
