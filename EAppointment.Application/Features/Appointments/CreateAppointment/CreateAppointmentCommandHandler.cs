@@ -8,7 +8,7 @@ using TS.Result;
 namespace EAppointment.Application.Features.Appointments.CreateAppointment;
 
 internal sealed class CreateAppointmentCommandHandler(
-    IAppointmentRepository appointmentRepository,
+    IAppointmentsRepository appointmentRepository,
     IUnitOfWork unitOfWork,
     IPatientRepository patientRepository) : IRequestHandler<CreateAppointmentCommand, Result<string>>
 {

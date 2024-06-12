@@ -6,7 +6,7 @@ using TS.Result;
 
 namespace EAppointment.Application.Features.Appointments.DeleteAppointmentById;
 internal sealed class DeleteAppointmentByIdCommandHandler(
-    IAppointmentRepository appointmentRepository,
+    IAppointmentsRepository appointmentRepository,
     IUnitOfWork unitOfWork) : IRequestHandler<DeleteAppointmentByIdCommand, Result<string>>
 {
     public async Task<Result<string>> Handle(DeleteAppointmentByIdCommand request, CancellationToken cancellationToken)

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using EAppointment.Domain.Entities;
+using EAppointment.Domain.Repositories;
 using GenericRepository;
 using MediatR;
 using Microsoft.AspNetCore.Identity;

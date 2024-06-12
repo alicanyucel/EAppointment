@@ -7,7 +7,7 @@ using TS.Result;
 namespace EAppointment.Application.Features.Appointments.UpdateAppointment
 {
     internal sealed class UpdateAppointmentCommandHandler(
-    IAppointmentRepository appointmentRepository,
+    IAppointmentsRepository appointmentRepository,
     IUnitOfWork unitOfWork) : IRequestHandler<UpdateAppointmentCommand, Result<string>>
     {
         public async Task<Result<string>> Handle(UpdateAppointmentCommand request, CancellationToken cancellationToken)

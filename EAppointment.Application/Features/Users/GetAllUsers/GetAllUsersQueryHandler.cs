@@ -1,4 +1,5 @@
 ﻿using EAppointment.Domain.Entities;
+using EAppointment.Domain.Repositories;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
