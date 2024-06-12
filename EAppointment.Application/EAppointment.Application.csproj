@@ -18,8 +18,4 @@
     <ProjectReference Include="..\EAppointment.Domain\EAppointment.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Features\Patients\UpdatePatient\" />
-  </ItemGroup>
-
 </Project>

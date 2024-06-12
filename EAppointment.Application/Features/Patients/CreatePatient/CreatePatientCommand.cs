@@ -8,4 +8,10 @@ using TS.Result;
 
 namespace EAppointment.Application.Features.Patients.CreatePatient;
 
-internal sealed record CreatePatientCommand(string FirstName,string LastName,string FullAddress,string Town,string City,string IdentityNumber):IRequest<Result<string>>;
+public sealed record CreatePatientCommand(
+    string FirstName,
+    string LastName,
+    string IdentityNumber,
+    string City,
+    string Town,
+    string FullAddress) : IRequest<Result<string>>;
