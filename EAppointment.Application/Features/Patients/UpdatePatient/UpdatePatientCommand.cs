@@ -9,4 +9,4 @@ public sealed record UpdatePatientCommand(
     string IdentityNumber,
     string City,
     string Town,
-    string FullAddress) : IRequest<Result<string>>;
+    string FullAdress) : IRequest<Result<string>>;
