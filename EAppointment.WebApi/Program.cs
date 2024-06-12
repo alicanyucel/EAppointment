@@ -1,5 +1,6 @@
 using DefaultCorsPolicyNugetPackage;
 using EAppointment.Application;
+using EAppointment.Domain.Repositories;
 using EAppointment.Infrastructure;
 using EAppointment.WebApi;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -28,7 +29,6 @@ builder.Services.AddDefaultCors();
 
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
-
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(setup =>

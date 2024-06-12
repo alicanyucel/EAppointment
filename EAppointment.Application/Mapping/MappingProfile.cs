@@ -3,13 +3,9 @@ using EAppointment.Application.Features.Doctors.CreateDoctor;
 using EAppointment.Application.Features.Doctors.UpdateDoctor;
 using EAppointment.Application.Features.Patients.CreatePatient;
 using EAppointment.Application.Features.Patients.UpdatePatient;
+using EAppointment.Application.Features.Users.CreateUser;
+using EAppointment.Application.Features.Users.UpdateUser;
 using EAppointment.Domain.Entities;
-using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EAppointment.Application.Mapping
 {
@@ -27,6 +23,8 @@ namespace EAppointment.Application.Mapping
             });
             CreateMap<CreatePatientCommand, Patient>().ReverseMap();
             CreateMap<UpdatePatientCommand, Patient>().ReverseMap();
+            CreateMap<CreateUserCommand, AppUser>();
+            CreateMap<UpdateUserCommand, AppUser>();
         }
     }
 }
