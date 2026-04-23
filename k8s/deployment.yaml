@@ -1,0 +1,140 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eappointment-api
+  namespace: eappointment
+  labels:
+    app: eappointment-api
+    version: v1
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: eappointment-api
+  template:
+    metadata:
+      labels:
+        app: eappointment-api
+        version: v1
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "80"
+        prometheus.io/path: "/metrics"
+    spec:
+      containers:
+      - name: eappointment-api
+        image: eappointment-api:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+          name: http
+          protocol: TCP
+        - containerPort: 443
+          name: https
+          protocol: TCP
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          valueFrom:
+            configMapKeyRef:
+              name: eappointment-config
+              key: ASPNETCORE_ENVIRONMENT
+        - name: ASPNETCORE_URLS
+          value: "http://+:80"
+        - name: ConnectionStrings__DefaultConnection
+          valueFrom:
+            secretKeyRef:
+              name: eappointment-secrets
+              key: SQL_CONNECTION_STRING
+        - name: ConnectionStrings__SqlServer
+          valueFrom:
+            secretKeyRef:
+              name: eappointment-secrets
+              key: SQL_CONNECTION_STRING
+        - name: ConnectionStrings__Redis
+          valueFrom:
+            configMapKeyRef:
+              name: eappointment-config
+              key: ConnectionStrings__Redis
+        - name: Jwt__SecretKey
+          valueFrom:
+            secretKeyRef:
+              name: eappointment-secrets
+              key: JWT_SECRET_KEY
+        - name: Jwt__Issuer
+          valueFrom:
+            secretKeyRef:
+              name: eappointment-secrets
+              key: JWT_ISSUER
+        - name: Jwt__Audience
+          valueFrom:
+            secretKeyRef:
+              name: eappointment-secrets
+              key: JWT_AUDIENCE
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
+          valueFrom:
+            configMapKeyRef:
+              name: eappointment-config
+              key: OTEL_EXPORTER_OTLP_ENDPOINT
+        - name: OTEL_SERVICE_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: eappointment-config
+              key: OTEL_SERVICE_NAME
+        - name: RabbitMQ__Host
+          valueFrom:
+            configMapKeyRef:
+              name: eappointment-config
+              key: RabbitMQ__Host
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 80
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 80
+          initialDelaySeconds: 15
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+        startupProbe:
+          httpGet:
+            path: /health
+            port: 80
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 3
+          failureThreshold: 30
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: eappointment-api-service
+  namespace: eappointment
+  labels:
+    app: eappointment-api
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+    name: http
+  - port: 443
+    targetPort: 443
+    protocol: TCP
+    name: https
+  selector:
+    app: eappointment-api

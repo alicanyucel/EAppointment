@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: eappointment-config
+  namespace: eappointment
+data:
+  ASPNETCORE_ENVIRONMENT: "Production"
+  OTEL_EXPORTER_OTLP_ENDPOINT: "http://otel-collector:4317"
+  OTEL_SERVICE_NAME: "eappointment-api"
+  ConnectionStrings__Redis: "redis-service:6379"
+  RabbitMQ__Host: "rabbitmq-service"
+  RabbitMQ__Port: "5672"
+  RabbitMQ__Username: "guest"
+  RabbitMQ__Password: "guest"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: eappointment-secrets
+  namespace: eappointment
+type: Opaque
+stringData:
+  SQL_CONNECTION_STRING: "Server=sqlserver-service;Database=EAppointmentDb;User Id=sa;Password=YourStrong@Passw0rd;TrustServerCertificate=True"
+  JWT_SECRET_KEY: "www.eappointment.net www.eappointment.net www.eappointment.net"
+  JWT_ISSUER: "eappointment-api"
+  JWT_AUDIENCE: "www.eappointment.net"

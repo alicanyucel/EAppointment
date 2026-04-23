@@ -13,11 +13,11 @@ using System.Threading.Tasks;
 
 namespace EAppointment.Infrastructure.Context
 {
-    internal sealed class ApplicationDbContext:IdentityDbContext<AppUser,AppRole,Guid,IdentityUserClaim<Guid>,AppUserRole,IdentityUserLogin<Guid>,IdentityRoleClaim<Guid>,IdentityUserToken<Guid>>,IUnitOfWork
+    public sealed class ApplicationDbContext:IdentityDbContext<AppUser,AppRole,Guid,IdentityUserClaim<Guid>,AppUserRole,IdentityUserLogin<Guid>,IdentityRoleClaim<Guid>,IdentityUserToken<Guid>>,IUnitOfWork
     {
         public ApplicationDbContext(DbContextOptions options):base(options) 
         {
-                
+
         }
         public DbSet<Doctor> Doctors {  get; set; }
         public DbSet<Appointment> Appointments { get; set; }

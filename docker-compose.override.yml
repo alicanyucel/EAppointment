@@ -1,0 +1,15 @@
+# Development docker-compose override
+version: '3.8'
+
+services:
+  eappointment-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: build
+    volumes:
+      - .:/src
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    command: dotnet watch run --project /src/EAppointment.WebApi/EAppointment.WebApi.csproj
