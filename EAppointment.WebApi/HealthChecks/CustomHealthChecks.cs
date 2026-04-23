@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using StackExchange.Redis;
+using Microsoft.EntityFrameworkCore;
 
 namespace EAppointment.WebApi.HealthChecks;
 

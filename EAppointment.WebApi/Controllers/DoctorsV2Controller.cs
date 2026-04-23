@@ -20,11 +20,15 @@ public sealed class DoctorsV2Controller : ApiController
     public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
     {
         var query = new GetAllDoctorQuery();
-        var result = await _mediator.Send(query, cancellationToken);
+        var response = await _mediator.Send(query, cancellationToken);
+
+        if (!response.IsSuccessful || response.Data == null)
+        {
+            return BadRequest(response);
+        }
 
         var baseUrl = HttpContext.GetBaseUrl();
-        var doctorList = result as List<Doctor> ?? result.ToList();
-        var resources = doctorList.Select(d => d.ToHATEOAS(baseUrl)).ToList();
+        var resources = response.Data.Select(d => d.ToHATEOAS(baseUrl)).ToList();
 
         return Ok(new
         {

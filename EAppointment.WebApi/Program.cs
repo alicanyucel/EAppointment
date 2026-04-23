@@ -16,6 +16,11 @@ using Serilog;
 using Serilog.Events;
 using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.RateLimiting;
+using Hangfire;
+using Hangfire.SqlServer;
+using Hangfire.Redis.StackExchange;
+using EAppointment.WebApi.Infrastructure;
+using EAppointment.WebApi.Jobs;
 
 // Serilog Configuration
 Log.Logger = new LoggerConfiguration()
@@ -153,8 +158,6 @@ builder.Services.AddOpenTelemetry()
     .WithMetrics(metrics => metrics
         .AddAspNetCoreInstrumentation()
         .AddHttpClientInstrumentation()
-        .AddRuntimeInstrumentation()
-        .AddProcessInstrumentation()
         .AddPrometheusExporter());
 
 // Logging with OpenTelemetry
@@ -213,6 +216,19 @@ builder.Services.AddAuthorizationBuilder();
 
 builder.Services.AddDefaultCors();
 
+// Hangfire Configuration
+builder.Services.AddHangfire(config => config
+    .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+    .UseSimpleAssemblyNameTypeSerializer()
+    .UseRecommendedSerializerSettings()
+    .UseSqlServerStorage(builder.Configuration.GetConnectionString("DefaultConnection"))
+    .UseRedisStorage(builder.Configuration.GetConnectionString("Redis")));
+
+builder.Services.AddHangfireServer();
+
+// Register background job service
+builder.Services.AddScoped<IBackgroundJobService, BackgroundJobService>();
+
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddControllers();
@@ -267,6 +283,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// Hangfire Dashboard
+app.UseHangfireDashboard("/hangfire", new DashboardOptions
+{
+    Authorization = new[] { new HangfireAuthorizationFilter() }
+});
+
 // Health check endpoints
 app.MapHealthChecks("/health", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions
 {
@@ -298,6 +320,16 @@ app.UseCors();
 app.MapControllers();
 
 Helper.CreateUserAsync(app).Wait();
+
+// Initialize recurring jobs
+using (var scope = app.Services.CreateScope())
+{
+    var jobService = scope.ServiceProvider.GetRequiredService<IBackgroundJobService>();
+    jobService.ScheduleAppointmentReminders();
+    jobService.CleanupOldLogs();
+    jobService.GenerateReports();
+    Log.Information("Background jobs initialized");
+}
 
 app.Run();
 

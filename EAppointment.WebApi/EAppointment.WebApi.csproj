@@ -56,6 +56,11 @@
 
     <!-- Rate Limiting -->
     <PackageReference Include="AspNetCoreRateLimit" Version="5.0.0" />
+
+    <!-- Hangfire for Background Jobs -->
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.8.9" />
+    <PackageReference Include="Hangfire.SqlServer" Version="1.8.9" />
+    <PackageReference Include="Hangfire.Redis.StackExchange" Version="1.9.3" />
   </ItemGroup>
 
   <ItemGroup>
